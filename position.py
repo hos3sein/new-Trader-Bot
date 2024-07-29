@@ -4,7 +4,7 @@
 # print('hello world for test!!!')
 
 
-class Position:
+class Position():
     def __init__(self):
         self.positionType = None
         self.state = 0

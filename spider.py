@@ -4,7 +4,7 @@ import time
 import position 
 import requests
 import datetime
-
+import analyzor
 
 
 # state = 0
@@ -22,7 +22,9 @@ import datetime
 position = position.Position()
 print(position.maxTouch)
 
+data = analyzor.data()
 
+print(data.calculate())
 
 
 # while True:

@@ -3,6 +3,10 @@
 import time
 import position 
 import requests
+import datetime
+
+
+
 # state = 0
 # rsi = 0
 # price = 0
@@ -13,10 +17,13 @@ import requests
 # reTouch=None
 # divergance = None
 
+
+
 position = position.Position()
 print(position.maxTouch)
-r = requests.get('https://min-api.cryptocompare.com/data/v2/histohour?fsym=BTC&tsym=USD&limit=10')
-print(r.json()['Data']['Data'])
+
+
+
 
 # while True:
     # if (state == 0):               # waiting for coming the price to my zone

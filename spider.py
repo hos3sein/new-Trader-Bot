@@ -2,115 +2,105 @@
 
 import time
 import position 
-import requests
+# import requests
 import datetime
 import analyzor
+import logging
 
 
-# state = 0
-# rsi = 0
-# price = 0
-# isActive=False
-# positionType = None                       # 0 : short   1 : long
-# maxTouch = {price : price , rsi : rsi}
-# minTouch = {price : price , rsi : rsi}
-# reTouch=None
-# divergance = None
+
+logging.basicConfig(format='%(asctime)s:%(levelname)s:>>>>>%(message)s', level=logging.DEBUG , datefmt='%m/%d/%Y %I:%M:%S %p')
+logging.debug('hello ,  im spider and start the analyze the market for trading')
+
+
 
 
 
 position = position.Position()
-print(position.maxTouch)
 
 data = analyzor.data()
 
-print(data.calculate())
+def getTime():
+    return {'hour' : int(datetime.datetime.now().hour) , 'minute' : int(datetime.datetime.now().minute) }
 
 
-# while True:
-    # if (state == 0):               # waiting for coming the price to my zone
-    #     if (rsi < 30 or rsi > 70):
-    #         # True if fruit == 'Apple' else False
-    #         state = 1
-    #         isActive=True
-    #         if (rsi<30):
-    #             minTouch.price = price
-    #             minTouch.rsi = rsi
-    #             positionType = 0
-    #             time.sleep(60*60)
-    #         elif(rsi>70):
-    #             maxTouch.price = price
-    #             maxTouch.rsi = rsi
-    #             positionType = 1
-    #             time.sleep(60*60)
+while True:
+    time.sleep(25)
+    if (getTime()['minute'] == 30):
+        logging.info('main=> time for checking the price...')
+        cData = data.calculate()
+        if (position.state == 0):               # waiting for coming the price to my zone
+            logging.info('main=> im waiting for coming the price to my zone...')
+            if (cData['rsi'] < 30 or cData['rsi'] > 70):
+                logging.info('main=> market is in my zone...')
+                position.changeStatus(1 , cData)
+                time.sleep(60)
 
-    # elif(state == 1):            # waiting for making the buttom or top level
-    #     if ((rsi > 70 and price < maxTouch.price) or (rsi<30 and price > minTouch.price)):
-    #         state = 2
-    #         time.sleep(60*60)
-    #     elif ((rsi > 70 and price > maxTouch.price) or (rsi<30 and price < minTouch.price)):
-    #         if (rsi > 70):
-    #             maxTouch.price = price
-    #             maxTouch.rsi = rsi
-    #             time.sleep(60*60)
-    #         elif(rsi<30):
-    #             minTouch.price = price
-    #             minTouch.rsi = rsi
-    #             time.sleep(60*60)
-    # elif(state == 2):          # waiting for making retouch the top or buttom
-    #     if (positionType == 0):
-    #         if (price in range(minTouch.price-(minTouch.price*0.005) , minTouch.price+(minTouch.price*0.005))):
-    #             # reTouch = price
-    #             state = 3
-    #             divergance = rsi
-    #             time.sleep(60*60)
-    #         elif(price < minTouch.price-(minTouch.price*0.005) ):
-    #             minTouch.price = price
-    #             minTouch.rsi = rsi
-    #             state = 1
-    #             time.sleep(60*60)
-    #     else:
-    #         if (price in range(maxTouch.price-(maxTouch.price*0.005) , maxTouch.price+(maxTouch.price*0.005))):
-    #             # reTouch = price
-    #             state = 3
-    #             divergance = rsi
-    #             time.sleep(60*60)
-    #         elif(price > maxTouch.price-(maxTouch.price*0.005)):
-    #             maxTouch.price = price
-    #             maxTouch.rsi = rsi
-    #             state = 1
-    #             time.sleep(60*60)
-            
-    # elif(state == 3):         # waiting for approv the divergance
-    #     if (positionType == 0):
-    #         if (price > minTouch.price):
-    #             if (divergance > minTouch.rsi):
-    #                 state = 4
-    #                 #! notif
-    #         elif(price < minTouch.price):
-    #             minTouch.price = price
-    #             minTouch.rsi = rsi
-    #             state = 1
-    #             time.sleep(60*60)
+        elif(position.state == 1):            # waiting for making the buttom or top level
+            logging.info('main=> i am waiting for making the buttom or top level...')
+            if ((cData['rsi'] > 70 and cData['price'] < position.maxTouch.price) or (cData['rsi']<30 and cData['price'] > position.minTouch.price)):
+                logging.info('main=> the top zone made in the market ....')
+                position.changeStatus(2 , cData)
+                time.sleep(60)
+            elif ((cData['rsi'] > 70 and cData['price'] > position.maxTouch.price) or (cData['rsi']<30 and cData['price'] < position.minTouch.price)):
+                if (cData['rsi'] > 70):
+                    logging.info('main=> the max price updated to the upper price ....')
+                    position.updatePrice(cData , 1)
+                    time.sleep(60)
+                elif(cData['rsi']<30):
+                    logging.info('main=> the min price updated to the lower price ....')
+                    position.updatePrice(cData , 0)
+                    time.sleep(60)
+        elif(position.state == 2):          # waiting for making retouch the top or buttom
+            logging.info('main=> im waiting for making retouch the top or buttom ...')
+            if (position.positionType == 0):
+                if (cData['price'] in range(position.minTouch.price-(position.minTouch.price*0.005) , position.minTouch.price+(position.minTouch.price*0.005))):
+                    logging.info('main=> wow! the market retouch the zone...')
+                    position.changeStatus(3 , cData)
+                    time.sleep(60)
+                elif(cData['price'] < position.minTouch.price-(position.minTouch.price*0.005) ):
+                    logging.info('main=> shit the zone was not stable and break...')
+                    position.changeStatus(1 , cData)
+                    time.sleep(60)
+            else:
+                if (cData['price'] in range(position.maxTouch.price-(position.maxTouch.price*0.005) , position.maxTouch.price+(position.maxTouch.price*0.005))):
+                    logging.info('main=> wow! the market retouch the zone...')
+                    position.changeStatus(3 , cData)
+                    time.sleep(60)
+                elif(cData['price'] > position.maxTouch.price-(position.maxTouch.price*0.005)):
+                    logging.info('main=> shit the zone was not stable and break...')
+                    position.changeStatus(1 , cData)
+                    time.sleep(60)
                 
+        elif(position.state == 3):         # waiting for approv the divergance
+            logging.info('main=> im waiting for approv the divergance')
+            if (position.positionType == 0):
+                if (cData['price'] > position.minTouch.price):
+                    if (position.divergance > position.minTouch.rsi):
+                        logging.info('main=> the divergance happended....')
+                        position.changeStatus(4 , cData)
 
-    #     else:
-    #         if (price > minTouch.price):
-    #             if (divergance < maxTouch.rsi):
-    #                 state = 4
-    #                 #! notif
-    #         elif(price > maxTouch.price):
-    #             maxTouch.price = price
-    #             maxTouch.rsi = rsi
-    #             state = 1
-    #             time.sleep(60*60)
+                elif(cData['price'] < position.minTouch.price):
+                    logging.info('main=> shit the zone was not stable and break...')
+                    position.changeStatus(1 , cData)
+                    time.sleep(60)
+                    
+
+            else:
+                if (cData['price'] > position.minTouch.price):
+                    if (position.divergance < position.maxTouch.rsi):
+                        logging.info('main=> the divergance happended....')
+                        position.changeStatus(4 , cData)
+                elif(cData['price'] > position.maxTouch.price):
+                    logging.info('main=> shit the zone was not stable and break...')
+                    position.changeStatus(1 , cData)
+                    time.sleep(60)
 
 
-    # elif(state == 4):            # waiting for back to the safeZone
-    #     if (rsi > 30 and rsi < 70):
-    #         state = 0
-    #         isActive=False
-    #         positionType = None 
-    #         reTouch=None
-    #         divergance = None
-    #         time.sleep(60*60)
+        elif(position.state == 4):            # waiting for back to the safeZone
+            logging.info('main=> im waiting for back to the safeZone')
+            if (cData['rsi'] > 30 and cData['rsi'] < 70):
+               logging.info('main=> market is in the safe zone...')
+               position.refresh()
+               time.sleep(60)
+     

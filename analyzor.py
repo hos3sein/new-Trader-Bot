@@ -9,6 +9,7 @@ import logging
 
 
 logging.basicConfig(format='%(asctime)s:%(levelname)s:>>>>>%(message)s', level=logging.DEBUG , datefmt='%m/%d/%Y %I:%M:%S %p')
+
 class data:
     def __init__(self):
         logging.info(' analyzor : i made the instance for the data analyzing...')

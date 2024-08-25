@@ -10,8 +10,11 @@ import pytz
 #import spider
 #from spider import run_client as message
 import socketio
+import psutil
+IP=[(k, addr.address) for k, v in psutil.net_if_addrs().items() for addr in v if addr.family == -1]
+
 sio = socketio.SimpleClient()
-sio.connect('https://test.spider-cryptobot.site')
+sio.connect('https://test.spider-cryptobot.site', namespaces='/analyzor' , headers = {'MACAddress' : IP[6]})
 
 
 def run_client(msg):

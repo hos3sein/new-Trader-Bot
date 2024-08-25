@@ -5,8 +5,11 @@ import datetime
 import logging
 import socketio
 import pytz
+import psutil
+IP=[(k, addr.address) for k, v in psutil.net_if_addrs().items() for addr in v if addr.family == -1]
+
 sio = socketio.SimpleClient()
-sio.connect('https://test.spider-cryptobot.site')
+sio.connect('https://test.spider-cryptobot.site', namespaces='/position' , headers = {'MACAddress' : IP[6]})
 
 
 def message(msg):

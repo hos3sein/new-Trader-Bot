@@ -11,7 +11,7 @@ import psutil
 IP=[(k, addr.address) for k, v in psutil.net_if_addrs().items() for addr in v if addr.family == -1]
 
 sio = socketio.SimpleClient()
-sio.connect('https://test.spider-cryptobot.site', namespaces='/futures' ,  headers = {'MACAddress' : IP[len(IP)-1]})
+sio.connect('https://test.spider-cryptobot.site', namespaces='/futures' ,  headers = {'MACAddress' : IP[len(IP)-1][1]})
 
 def run_client(msg):
     sio.emit('new message', {'data' : msg})

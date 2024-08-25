@@ -15,7 +15,7 @@ import socketio
 # # IP=[(k, addr.address) for k, v in psutil.net_if_addrs().items() for addr in v if addr.family == -1]
 # print(IP)
 sio = socketio.SimpleClient()
-sio.connect('https://test.spider-cryptobot.site', namespaces='/analyzor')
+sio.connect('https://test.spider-cryptobot.site', namespace='/analyzor')
 
 
 def run_client(msg):

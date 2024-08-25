@@ -3,12 +3,12 @@ import socketio
 import datetime
 import time
 import pytz
-import subprocess
-IP = subprocess.check_output('wmic bios get serialnumber').decode("utf-8") 
-# IP=[(k, addr.address) for k, v in psutil.net_if_addrs().items() for addr in v if addr.family == -1]
-print(IP)
+# import subprocess
+# IP = subprocess.check_output('wmic bios get serialnumber').decode("utf-8") 
+# # IP=[(k, addr.address) for k, v in psutil.net_if_addrs().items() for addr in v if addr.family == -1]
+# print(IP)
 sio = socketio.SimpleClient()
-sio.connect('https://test.spider-cryptobot.site', namespaces='/spot' , headers = {'MACAddress' : IP})
+sio.connect('https://test.spider-cryptobot.site', namespaces='/spot')
 
 
 def message(msg):

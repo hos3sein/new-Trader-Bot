@@ -40,45 +40,50 @@ while True:
             time.sleep(40)
 
         elif(cData['rsi'] < 30 and safeZone == True):                    # if the price under the 30
-            safeZone = False                                             # first make the safeZone false 
+            safeZone = False                              # first make the safeZone false 
             if (buyStatus == 0 and sellStatus > 0):                                         # check the buy status if it was 0
+                percent = ((cData['price']-lastPrice)/lastPrice)*100
                 buyStatus = 1                          
                 lastPrice = cData['price']                               # save the last price
-                message(f'spot , its time to enter to the level.1 in time , {getTime()["hour"]}:{getTime()["minute"]} ... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}')
+                message(f'spot , its time to enter to the level.1 in time , {getTime()["hour"]}:{getTime()["minute"]} ... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}, the change percent is {percent}')
                 sellStatus -= 1
                 time.sleep(40)
             ### if the status was 1
             ### we need to check the fucking prices diffrent 
             elif(buyStatus == 1 and sellStatus > 0):                                        # if the status was 1 it means that the price was not come back to safe zone
-                if ( cData['rsi'] <= 25 ): # if the diffrent price percent was more than 5% buy again
+                if ( (abs(cData['price']-lastPrice)/lastPrice)*100 > 5 ): # if the diffrent price percent was more than 5% buy again
+                    percent = ((cData['price']-lastPrice)/lastPrice)*100
                     lastPrice = cData['price']
                     buyStatus = 2
-                    message(f'spot , its time to enter to the level.2 in the time , {getTime()["hour"]}:{getTime()["minute"]} ... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}')
+                    message(f'spot , its time to enter to the level.2 in the time , {getTime()["hour"]}:{getTime()["minute"]} ... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}, the change percent is {percent}')
                     sellStatus -= 1
                     time.sleep(40)
             elif(buyStatus == 2 and sellStatus > 0):
-                if (cData['rsi'] <= 20):
+                if ( (abs(cData['price']-lastPrice)/lastPrice)*100 > 5):
+                    percent = (cData['price']-lastPrice)/lastPrice*100
                     buyStatus = 3
                     lastPrice = cData['price']
                     sellStatus -= 1
-                    message(f'spot ,ts time to enter to the level.3 in the time , {getTime()["hour"]}:{getTime()["minute"]}')
+                    message(f'spot ,ts time to enter to the level.3 in the time , {getTime()["hour"]}:{getTime()["minute"]}... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}, the change percent is {percent}')
                     time.sleep(40)
 
 
         elif(cData['rsi'] < 30 and safeZone == False):
             if(buyStatus == 1 and sellStatus > 0):
-                if (cData['rsi'] <= 25):
+                if ((abs(cData['price']-lastPrice)/lastPrice) * 100 > 5):
+                    percent = (cData['price']-lastPrice)/lastPrice*100
                     buyStatus = 2
                     lastPrice = cData['price']
-                    message(f'spot , its time to enter to the level.2 in the time , {getTime()["hour"]}:{getTime()["minute"]} ... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}') if cData['price'] < (lastPrice-(0.1*lastPrice)) else message(f'prit ,s not break enough in the time , {getTime()["hour"]}:{getTime()["minute"]} ... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}')
+                    message(f'spot , its time to enter to the level.2 in the time , {getTime()["hour"]}:{getTime()["minute"]} ... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}, the change percent is {((cData['price']-lastPrice)/lastPrice)*100}') if cData['price'] < (lastPrice-(0.1*lastPrice)) else message(f'prit ,s not break enough in the time , {getTime()["hour"]}:{getTime()["minute"]} ... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}, the change percent is {percent}')
                     sellStatus -= 1
                     time.sleep(40)
             elif(buyStatus == 2 and sellStatus > 0):
-                if (cData['rsi'] <= 20):
+                if ( (abs(cData['price']-lastPrice)/lastPrice)*100 > 5):
+                    percent = (cData['price']-lastPrice)/lastPrice*100
                     buyStatus = 3
                     lastPrice = cData['price']
                     sellStatus -= 1
-                    message(f'spot , its time to enter to the level.2 in the time , {getTime()["hour"]}:{getTime()["minute"]}') if cData['price'] < (lastPrice-(0.05*lastPrice)) else message(f'prit ,s not break enough in the time , {getTime()["hour"]}:{getTime()["minute"]} ... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}')
+                    message(f'spot , its time to enter to the level.2 in the time , {getTime()["hour"]}:{getTime()["minute"]}, the change percent is {((cData['price']-lastPrice)/lastPrice)*100}') if cData['price'] < (lastPrice-(0.05*lastPrice)) else message(f'prit ,s not break enough in the time , {getTime()["hour"]}:{getTime()["minute"]} ... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}, the change percent is {percent}')
                     time.sleep(40)
 
 
@@ -86,40 +91,45 @@ while True:
         elif(cData['rsi'] > 70 and safeZone == True):
             safeZone = False
             if (sellStatus == 0 and buyStatus > 0):
+                percent = (cData['price']-lastPrice)/lastPrice*100
                 sellStatus = 1
                 lastPrice = cData['price']
-                message(f'spot , its time to get out from the level.1 in the time , {getTime()["hour"]}:{getTime()["minute"]} ... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}')
+                message(f'spot , its time to get out from the level.1 in the time , {getTime()["hour"]}:{getTime()["minute"]} ... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}, the change percent is {percent}')
                 buyStatus -= 1
                 time.sleep(40)
                 
             elif(sellStatus == 1 and  buyStatus > 0):
-                if (cData['rsi'] >= 75):
+                if (((cData['price']-lastPrice)/lastPrice)*100 > 5):
+                    percent = ((cData['price']-lastPrice)/lastPrice)*100
                     sellStatus = 2
                     lastPrice = cData['price']
-                    message(f'its time to get out from the level.2 in the time , {getTime()["hour"]}:{getTime()["minute"]} ... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}')
+                    message(f'its time to get out from the level.2 in the time , {getTime()["hour"]}:{getTime()["minute"]} ... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}, the change percent is {percent}')
                     buyStatus -= 1 
                     time.sleep(40)
             elif(sellStatus == 2 and buyStatus > 0):
-                if (cData['rsi'] <= 80):
+                if (((cData['price']-lastPrice)/lastPrice)*100 > 5):
+                    percent = ((cData['price']-lastPrice)/lastPrice)*100
                     sellStatus = 3
                     lastPrice = cData['price']
-                    message(f'spot , its time to get out from the level.3 in the time , {getTime()["hour"]}:{getTime()["minute"]}... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}')
+                    message(f'spot , its time to get out from the level.3 in the time , {getTime()["hour"]}:{getTime()["minute"]}... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}, the change percent is {percent}')
                     buyStatus -= 1
                     time.sleep(40)
 
 
         elif(cData['rsi'] > 70 and safeZone == False):
             if(sellStatus == 1 and buyStatus > 0):
-                if (cData['rsi'] >= 75):
+                if (((cData['price']-lastPrice)/lastPrice)*100 > 5):
+                    percent = ((cData['price']-lastPrice)/lastPrice)*100
                     sellStatus = 2
-                    message(f'spot , its time to get out from the level.2 in the time , {getTime()["hour"]}:{getTime()["minute"]}... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}') if cData['price'] < (lastPrice+(0.1*lastPrice)) else message(f'prit ,s not top up enough in the time , {getTime()["hour"]}:{getTime()["minute"]}... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}')
+                    message(f'spot , its time to get out from the level.2 in the time , {getTime()["hour"]}:{getTime()["minute"]}... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}, the change percent is {percent}') if cData['price'] < (lastPrice+(0.1*lastPrice)) else message(f'prit ,s not top up enough in the time , {getTime()["hour"]}:{getTime()["minute"]}... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}, the change percent is {percent}')
                     lastPrice = cData['price']
                     buyStatus -= 1
                     time.sleep(40)
             elif(sellStatus == 2 and buyStatus > 0):
-                if (cData['rsi'] >= 80):
+                if (((cData['price']-lastPrice)/lastPrice)*100 > 5):
+                    percent = ((cData['price']-lastPrice)/lastPrice)*100
                     sellStatus = 3
-                    message(f'spot , its time to get out from the level.2 in the time , {getTime()["hour"]}:{getTime()["minute"]}... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}') if cData['price'] < (lastPrice+(0.05*lastPrice)) else message(f'prit ,s not top up enough in the time , {getTime()["hour"]}:{getTime()["minute"]}... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus}')
+                    message(f'spot , its time to get out from the level.2 in the time , {getTime()["hour"]}:{getTime()["minute"]}... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus} , the change percent is {percent} ') if cData['price'] < (lastPrice+(0.05*lastPrice)) else message(f'prit ,s not top up enough in the time , {getTime()["hour"]}:{getTime()["minute"]}... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus} , the change percent is {percent}')
                     lastPrice = cData['price']
                     buyStatus -= 1
                     time.sleep(40)

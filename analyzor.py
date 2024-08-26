@@ -19,7 +19,7 @@ sio.connect('https://test.spider-cryptobot.site', namespace='/analyzor')
 
 
 def run_client(msg):
-    sio.emit('analyzor', {'data' : msg} , namespace='/analyzor')
+    sio.emit('analyzor', {'data' : msg} , namespaces='/analyzor')
 
 
 def getTime():

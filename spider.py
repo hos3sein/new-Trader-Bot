@@ -11,11 +11,11 @@ import pytz
 # IP = subprocess.check_output('wmic bios get serialnumber').decode("utf-8") 
 # # IP=[(k, addr.address) for k, v in psutil.net_if_addrs().items() for addr in v if addr.family == -1]
 # print(IP)
-sio = socketio.SimpleClient()
+sio = socketio.Client()
 sio.connect('https://test.spider-cryptobot.site', namespace='/futures' )
 
 def run_client(msg):
-    sio.emit('new message', {'data' : msg})
+    sio.emit('new message', {'data' : msg} , namespace='/futures')
 
 
 

@@ -14,7 +14,7 @@ sio.connect('https://test.spider-cryptobot.site', namespaces='/position' )
 
 
 def message(msg):
-    sio.emit('position', {'data' : msg} , namespace='/position')
+    sio.emit('position', {'data' : msg} , namespaces='/position')
 
 
 

@@ -15,7 +15,7 @@ sio = socketio.Client()
 sio.connect('https://test.spider-cryptobot.site', namespaces='/futures' )
 
 def run_client(msg):
-    sio.emit('new message', {'data' : msg} , namespace='/futures')
+    sio.emit('new message', {'data' : msg} , namespaces='/futures')
 
 
 

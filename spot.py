@@ -32,7 +32,7 @@ safeZone = True
 message(f'im also watching the market for spot positions ')
 
 while True:
-    #message(f'spot ,m also watching the market for spot positions ... ')
+
     if (getTime()['minute'] == 59):
         cData = data.calculate()
         if (cData['rsi'] > 30 and cData['rsi']<70):                     # when the price was on the safe zone
@@ -53,7 +53,7 @@ while True:
             ### if the status was 1
             ### we need to check the fucking prices diffrent 
             elif(buyStatus == 1 and sellStatus > 0):                                        # if the status was 1 it means that the price was not come back to safe zone
-                if ( (abs(cData['price']-lastPrice)/lastPrice)*100 > 8 ): # if the diffrent price percent was more than 5% buy again
+                if ((abs(cData['price']-lastPrice)/lastPrice)*100 > 8 ): # if the diffrent price percent was more than 5% buy again
                     percent = ((cData['price']-lastPrice)/lastPrice)*100
                     lastPrice = cData['price']
                     buyStatus = 2
@@ -135,5 +135,5 @@ while True:
                     lastPrice = cData['price']
                     buyStatus -= 1
                     time.sleep(40)
-    else:
-        time.sleep(40)
+    
+    time.sleep(40)

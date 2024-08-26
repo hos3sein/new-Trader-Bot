@@ -14,7 +14,7 @@ sio.connect('https://test.spider-cryptobot.site', namespace='/position' )
 
 
 def message(msg):
-    sio.emit('analyzor', {'data' : msg} , namespace='/position')
+    sio.emit('position', {'data' : msg} , namespace='/position')
 
 
 
@@ -33,7 +33,7 @@ logging.basicConfig(format='%(asctime)s:%(levelname)s:>>>>>%(message)s', level=l
 class Position():
     def __init__(self):
         #logging.info(' position : i made the instance for the position...')
-        message(f'>>>position : i made the instance for the position...=> time :: {getTime()["hour"]}:{getTime()["minute"]}')
+        message(f'position part , i made the instance for the position...=> time :: {getTime()["hour"]}:{getTime()["minute"]}')
         self.positionType = None
         self.state = 0
         self.isActive = False
@@ -47,47 +47,47 @@ class Position():
     def changeStatus(self , status , cData):
         try:
             logging.info(f'position : the status will change to => {status}')
-            message(f'>>>position : the status will change to => {status}=> time :: {getTime()["hour"]}:{getTime()["minute"]}')
+            message(f'position part , the status will change to => {status}=> time :: {getTime()["hour"]}:{getTime()["minute"]}')
             if (status == 1):
                 self.state == 1
                 self.isActive=True
                 logging.info(f'position : the position activate successfully in {cData}')
-                message(f'>>>position : the position activate successfully in {cData}=> time :: {getTime()["hour"]}:{getTime()["minute"]}')
+                message(f'position part , the position activate successfully in {cData}=> time :: {getTime()["hour"]}:{getTime()["minute"]}')
                 if (cData['rsi']<30):
                     self.minTouch['price'] = cData['price']
                     self.minTouch['rsi'] = cData['rsi']
                     self.positionType = 0
                     logging.info(f'position : the minTouch successfully set and waiting for market to make the buttom in price => {cData}')
-                    message(f'>>>position : the minTouch successfully set and waiting for market to make the buttom in price => {cData}=> time :: {getTime()["hour"]}:{getTime()["minute"]}')
+                    message(f'position part , the minTouch successfully set and waiting for market to make the buttom in price => {cData}=> time :: {getTime()["hour"]}:{getTime()["minute"]}')
                 elif(cData['rsi']>70):
                     self.maxTouch['price'] = cData['rsi']
                     self.maxTouch['rsi'] = cData['rsi']
                     self.positionType = 1
                     logging.info(f'position : the maxTouch successfully set and waiting for market to make the top zone in price => {cData}')
-                    message(f'>>>position : the maxTouch successfully set and waiting for market to make the top zone in price => {cData}=> time :: {getTime()["hour"]}:{getTime()["minute"]}')
+                    message(f'position part , the maxTouch successfully set and waiting for market to make the top zone in price => {cData}=> time :: {getTime()["hour"]}:{getTime()["minute"]}')
             if (status == 2):
                 self.state = 2
                 logging.info(f'position : the {"buttom" if self.positionType == 0 else "top zone"} made successfully and waiting for the retouch...')
-                message(f'>>>position : the {"buttom" if self.positionType == 0 else "top zone"} made successfully and waiting for the retouch...=> time :: {getTime()["hour"]}:{getTime()["minute"]}')
+                message(f'position part , the {"buttom" if self.positionType == 0 else "top zone"} made successfully and waiting for the retouch...=> time :: {getTime()["hour"]}:{getTime()["minute"]}')
             if (status == 3):
                 self.state = 3
                 self.reTouch = cData['rsi']
                 self.divergance == cData['rsi']
                 logging.info(f'position : the retourch done successfully in price {cData["rsi"]} ')
-                message(f'>>>position : the retourch done successfully in price {cData["rsi"]} => time :: {getTime()["hour"]}:{getTime()["minute"]}')
+                message(f'position part , the retourch done successfully in price {cData["rsi"]} => time :: {getTime()["hour"]}:{getTime()["minute"]}')
             if (status == 4):
                 logging.info(f'position : the divergance successfully approved and i will notif user the position')
                 message(f'position : the divergance successfully approved and i will notif user the position=> time :: {getTime()["hour"]}:{getTime()["minute"]}')
-                message(f'>>>attention grandPa >>>>>>> its time to {f"BUY the ETH on price {cData["price"]}" if self.positionType == 0 else f"SELL the ETH on price {cData["price"]}"} => time :: {getTime()["hour"]}:{getTime()["minute"]}')
+                message(f'position part , its time to {f"BUY the ETH on price {cData["price"]}" if self.positionType == 0 else f"SELL the ETH on price {cData["price"]}"} => time :: {getTime()["hour"]}:{getTime()["minute"]}')
                 if (self.positionType == 0):
                     
                     print('its time to buy')
-                    message(f'>>> position :: its time to BUY the ETH on price {cData["price"]} => time :: {getTime()["hour"]} : {getTime()["minute"]}')
+                    message(f'position part , its time to BUY the ETH on price {cData["price"]} => time :: {getTime()["hour"]} : {getTime()["minute"]}')
                 elif(self.positionType == 1):
                     print('its time to sell')
-                    message(f'>>> position :: its time to SELL the ETH on price {cData["price"]} => time :: {getTimee()["hout"]}:{getTime()["minute"]}')
+                    message(f'position part , its time to SELL the ETH on price {cData["price"]} => time :: {getTimee()["hout"]}:{getTime()["minute"]}')
         except BaseException as error:
-            message('>>>Oops!I have some issue in changin status from the position : {}'.format(error))
+            message('Oops! position part hase some issue in changin status from the position : {}'.format(error))
 
 
 

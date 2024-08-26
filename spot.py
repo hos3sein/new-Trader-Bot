@@ -12,7 +12,7 @@ sio.connect('https://test.spider-cryptobot.site', namespaces='/spot')
 
 
 def message(msg):
-    sio.emit('spot', {'data' : msg} , namespaces='/spot')
+    sio.emit('spot', {'data' : msg} , namespace='/spot')
 
 
 def getTime():

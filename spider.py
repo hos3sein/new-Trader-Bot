@@ -20,7 +20,7 @@ def run_client(msg):
 
 
 
-print(socketio.__file__)
+# print(socketio.__file__)
 
 logging.basicConfig(format='%(asctime)s:%(levelname)s:>>%(message)s', level=logging.DEBUG , datefmt='%m/%d/%Y %I:%M:%S %p')
 logging.debug('hello ,  im spider and start the analyze the market for trading')
@@ -44,11 +44,11 @@ run_client('position : i made the instance for the position...')
 
 while True:
     #run_client(f'main part , = > its for test babay {getTime()["hour"]} : {getTime()["minute"]}' )
-    time.sleep(40)
-    if (getTime()['minute'] == 59):
-        logging.info('main part , time for checking the price...')
+    time.sleep(40)                               #sleep 40 seconds
+    if (getTime()['minute'] == 59):              #check time for entry confirmation 
+        logging.info('main part , time for checking the price...')                  
         run_client(f'main part , time for checking the price , time , {getTime()["hour"]} : {getTime()["minute"]}')
-        cData = data.calculate()
+        cData = data.calculate()                                         # get data from the analyzor
         if (position.state == 0):               # waiting for coming the price to my zone
             logging.info('main part , im waiting for coming the price to my zone')
             run_client(f'main part , im waiting for coming the price to my zone in time , {getTime()["hour"]} : {getTime()["minute"]}')

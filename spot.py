@@ -26,7 +26,8 @@ data = analyzor.data()
 
 buyStatus = 0
 sellStatus = 3
-lastPrice = 0
+c = data.calculate()
+lastPrice = c['price']
 safeZone = True
 message(f'im also watching the market for spot positions ')
 

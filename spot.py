@@ -33,7 +33,7 @@ message(f'im also watching the market for spot positions ')
 
 while True:
 
-    if (getTime()['minute'] == 59 and int(datetime.datetime.now(pytz.timezone("America/New_York")).second) == 58):
+    if (getTime()['minute'] == 59 and int(datetime.datetime.now(pytz.timezone("America/New_York")).second) >= 58 and int(datetime.datetime.now(pytz.timezone("America/New_York")).second) <= 58):
         print("<><><><><> its time <><><><><><>")
         cData = data.calculate()
         if (cData['rsi'] > 30 and cData['rsi']<70):                     # when the price was on the safe zone

@@ -39,7 +39,7 @@ while True:
             percent = ((cData['price']-lastPrice)/lastPrice)*100
             safeZone = True                                              # make the safeZone true 
             message(f' spot , the price is on the safe zone in the time {getTime()["hour"]}:{getTime()["minute"]} ... price is {cData['price']} , rsi is {cData['rsi']} , the safe zone is {safeZone} , the buy status is {buyStatus} , the sell status is {sellStatus} , the last price is {lastPrice} , the percent changes is {percent}')
-            lastPrice = cData['price']
+
            
 
         elif(cData['rsi'] < 30 and safeZone == True):                 # if the price under the 30

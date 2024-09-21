@@ -15,6 +15,7 @@ def message(msg):
     sio.emit('spot', {'data' : msg} , namespace='/spot')
 
 
+
 def getTime():
     newYork = pytz.timezone("America/New_York")
     return {'hour' : int(datetime.datetime.now(newYork).hour) , 'minute' : int(datetime.datetime.now(newYork).minute) }
@@ -29,7 +30,7 @@ c = data.calculate()
 lastPrice = c['price']
 safeZone = True
 lastStatus = 'buy'              # for the time that i want to check the percent filter
-message(f'im also watching the market for spot positions ')
+message(f'the spot bot restart in time {getTime()["hour"]}:{getTime()["minute"]} ')
 
 while True:
     if (getTime()['minute'] == 59 and int(datetime.datetime.now(pytz.timezone("America/New_York")).second) >= 58 and int(datetime.datetime.now(pytz.timezone("America/New_York")).second) <= 59):
